@@ -1,0 +1,29 @@
+x-environment-vars: &environment-vars
+  PYTHONUNBUFFERED: 1
+  PYTHONIOENCODING: utf-8
+  PYTHONPATH: .
+
+services:
+  worker:
+    image: api
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.local
+    ports:
+      - "8888:8888"
+    environment:
+      <<: *environment-vars
+    volumes:
+      - ./api:/code/api
+    command: python api/worker.py
+
+  listener:
+    image: api:latest
+    environment:
+      <<: *environment-vars
+    volumes:
+      - ./api:/code/api
+    command: python api/listener.py
+
+  rabbit:
+    image: rabbitmq:3.11

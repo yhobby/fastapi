@@ -1,0 +1,5 @@
+pydantic
+asyncio
+aio-pika
+fastapi
+uvicorn
